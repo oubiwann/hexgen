@@ -3,40 +3,80 @@
 ![Satellite Map](http://i.imgur.com/ekkaWgkl.png)
 
 ## What is this?
-It's a world map generator written in Python. It generates a random world map represented in a hexagon grid. The parameters for the generator allow for any kind of planet surface to be generated. It also can segment the surface into randomly sized globs called territories.
+
+It's a world map generator written in Python. It generates a random world map
+represented in a hexagon grid. The parameters for the generator allow for any
+kind of planet surface to be generated. It also can segment the surface into
+randomly sized globs called territories.
 
 ## Why?
-I'm using this as a board for a browser-based game I am working on. It can be used for anything from DnD campaigns to open-source games or even just for fun.
+
+I'm using this as a board for a browser-based game I am working on. It can be
+used for anything from DnD campaigns to open-source games or even just for fun.
 
 
-## Installation
+## Dependencies
 
-This project requires the following:
+* GNU Make
+* Docker
 
-* [Python 3.5](https://www.python.org/downloads/release/python-350/)
-* [Pillow 2.8.2](http://pillow.readthedocs.io/en/3.2.x/installation.html)
+## Setup
 
-It's recommended to use [virtualenv](https://pypi.python.org/pypi/virtualenv) and [virtualenvwrapper](http://virtualenvwrapper.readthedocs.io/en/latest/install.html) to keep the dependencies of this project separate from those that are installed globally on your system. With virtualenvwrapper, you can install this project with the following:
+```
+$ make docker
+```
 
-    mkvirtualenv hexgen -p python3
-    pip install -r requirements.txt
+## Usage
 
-Tip: Installing Pillow through pip requires the python header files. You can install those on Debian/Ubuntu with `sudo apt-get install python3-dev`.
+Quick help:
 
-To test your installation, run the unit tests:
+```
+$ ./bin/docker-hexgen -h
+```
+```
+usage: hexgen [-h] [--map-type MAP_TYPE] [--ocean-type OCEAN_TYPE]
+              [--surface-pressure SURFACE_PRESSURE] [--axial-tilt AXIAL_TILT]
+              [--size SIZE] [--roughness ROUGHNESS] [--base-temp BASE_TEMP]
+              [--avg-temp AVG_TEMP] [--sea-percent SEA_PERCENT]
+              [--hydrosphere] [--image] [--num-rivers NUM_RIVERS]
+              [--make-lakes] [--make-territories]
+              [--num-territories NUM_TERRITORIES] [--debug]
 
-    ./test
+optional arguments:
+  -h, --help            show this help message and exit
+  --map-type MAP_TYPE
+  --ocean-type OCEAN_TYPE
+  --surface-pressure SURFACE_PRESSURE
+  --axial-tilt AXIAL_TILT
+  --size SIZE
+  --roughness ROUGHNESS
+  --base-temp BASE_TEMP
+  --avg-temp AVG_TEMP
+  --sea-percent SEA_PERCENT
+  --hydrosphere
+  --image
+  --num-rivers NUM_RIVERS
+  --make-lakes
+  --make-territories
+  --num-territories NUM_TERRITORIES
+  --debug
+```
 
-If everything is working, it should report back "OK".
+An actual run might look something like this:
+```
+$ ./bin/docker-hexgen --axial-tilt=26 --base-temp=-20 --avg-temp=10 \
+                      --size=108 --roughness=10 --make-lakes
+```
 
-## How to use
 
-### Export types
-The primary export of Hexgen is a data structure that represents the world map. It can also export a bunch of png files that show various features on the map.
+### Output
 
-One interesting thing it can do is take all the data about a hexagon and determine its true color. As exported as an image, the entire grid taken as a whole can be thought of as a satellite image.
+All output is saved to the `./output` directory. This includes a series of
+world map images of different types as well as all the generated world data in
+JSON format.
 
 ### Hexagon types:
+
 - land: defined as a solid surface
 - water: define as a liquid surface
 
